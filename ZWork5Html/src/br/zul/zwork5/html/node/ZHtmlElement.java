@@ -15,13 +15,14 @@ import java.util.Objects;
  *
  * @author luiz.silva
  */
-public class ZHtmlElement implements ZHtmlNode, ZHtmlNodeFather {
+public class ZHtmlElement implements ZHtmlNode, ZHtmlNodeParent {
     
     //==========================================================================
     //VARIÁVEIS
     //==========================================================================
     private final Map<String, String> attributeMap;
     private final ZList<ZHtmlNode> nodeList;
+    private ZHtmlNodeParent parent;
     
     private String tagName;
     
@@ -72,18 +73,30 @@ public class ZHtmlElement implements ZHtmlNode, ZHtmlNodeFather {
     }
 
     @Override
-    public void add(ZHtmlNode node) {
+    public void addChild(ZHtmlNode node) {
         nodeList.add(node);
+        node.setParent(this);
     }
 
     @Override
-    public void remove(ZHtmlNode node) {
+    public void removeChild(ZHtmlNode node) {
         nodeList.remove(node);
+        node.setParent(null);
     }
     
     @Override
     public String toString(){
         return new ZHtmlNodeDefaultStringify().tryStringifyNode(this);
+    }
+
+    @Override
+    public boolean remove() {
+        return new ZHtmlNodeRemover(this).remove();
+    }
+
+    @Override
+    public boolean hasChild(ZHtmlNode node) {
+        return nodeList.contains(node);
     }
     
     //==========================================================================
@@ -178,6 +191,15 @@ public class ZHtmlElement implements ZHtmlNode, ZHtmlNodeFather {
     }
     public void setTagName(String tagName) {
         this.tagName = tagName;
+    }
+
+    @Override
+    public ZHtmlNodeParent getParent() {
+        return parent;
+    }
+    @Override
+    public void setParent(ZHtmlNodeParent parent) {
+        this.parent = parent;
     }
     
 }

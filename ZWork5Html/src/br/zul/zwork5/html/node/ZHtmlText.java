@@ -15,6 +15,7 @@ public class ZHtmlText implements ZHtmlNode{
     //VARIÁVEIS
     //==========================================================================
     private String content;
+    private ZHtmlNodeParent parent;
     
     //==========================================================================
     //CONSTRUTORES
@@ -62,6 +63,11 @@ public class ZHtmlText implements ZHtmlNode{
     public ZList<ZHtmlNode> listChildren() {
         return new ZList<>();
     }
+
+    @Override
+    public boolean remove() {
+        return new ZHtmlNodeRemover(this).remove();
+    }
     
     //==========================================================================
     //GETTERS E SETTERS
@@ -80,6 +86,15 @@ public class ZHtmlText implements ZHtmlNode{
     public ZHtmlText setContent(String content) {
         this.content = content;
         return this;
+    }
+
+    @Override
+    public ZHtmlNodeParent getParent() {
+        return this.parent;
+    }
+    @Override
+    public void setParent(ZHtmlNodeParent parent) {
+        this.parent = parent;
     }
     
 }

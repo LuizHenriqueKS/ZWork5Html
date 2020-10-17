@@ -9,7 +9,7 @@ import br.zul.zwork5.util.ZList;
  *
  * @author luiz.silva
  */
-public class ZHtmlNodeRoot implements ZHtmlNode, ZHtmlNodeFather {
+public class ZHtmlNodeRoot implements ZHtmlNode, ZHtmlNodeParent {
 
     //==========================================================================
     //VARIÁVEIS
@@ -42,18 +42,37 @@ public class ZHtmlNodeRoot implements ZHtmlNode, ZHtmlNodeFather {
     }
 
     @Override
-    public void add(ZHtmlNode node) {
+    public void addChild(ZHtmlNode node) {
         nodeList.add(node);
+        node.setParent(this);
     }
 
     @Override
-    public void remove(ZHtmlNode node) {
+    public void removeChild(ZHtmlNode node) {
         nodeList.remove(node);
+        node.setParent(null);
     }
     
     @Override
     public String toString(){
         return new ZHtmlNodeDefaultStringify().tryStringifyNode(this);
     }
+
+    @Override
+    public boolean remove() {
+        return false;
+    }
+
+    @Override
+    public boolean hasChild(ZHtmlNode node) {
+        return nodeList.contains(node);
+    }
+
+    @Override
+    public ZHtmlNodeParent getParent() {
+        return this;
+    }
+    @Override
+    public void setParent(ZHtmlNodeParent parent) {}
     
 }

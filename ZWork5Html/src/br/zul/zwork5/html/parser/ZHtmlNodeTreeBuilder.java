@@ -2,8 +2,8 @@ package br.zul.zwork5.html.parser;
 
 import br.zul.zwork5.html.filter.ZHtmlNode;
 import br.zul.zwork5.html.node.ZHtmlElement;
-import br.zul.zwork5.html.node.ZHtmlNodeFather;
 import java.util.Stack;
+import br.zul.zwork5.html.node.ZHtmlNodeParent;
 
 /**
  *
@@ -14,15 +14,15 @@ public class ZHtmlNodeTreeBuilder {
     //==========================================================================
     //VARIÁVEIS
     //==========================================================================
-    private final ZHtmlNodeFather root;
-    private final Stack<ZHtmlNodeFather> fatherStack;
+    private final ZHtmlNodeParent root;
+    private final Stack<ZHtmlNodeParent> fatherStack;
     
-    private ZHtmlNodeFather currentFather;
+    private ZHtmlNodeParent currentFather;
     
     //==========================================================================
     //CONSTRUTORES
     //==========================================================================
-    public ZHtmlNodeTreeBuilder(ZHtmlNodeFather root) {
+    public ZHtmlNodeTreeBuilder(ZHtmlNodeParent root) {
         this.root = root;
         this.fatherStack = new Stack<>();
         this.currentFather = root;
@@ -42,7 +42,7 @@ public class ZHtmlNodeTreeBuilder {
     }
     
     public void addNode(ZHtmlNode node){
-        currentFather.add(node);
+        currentFather.addChild(node);
     }
     
     public void closeElement(String tagName){
