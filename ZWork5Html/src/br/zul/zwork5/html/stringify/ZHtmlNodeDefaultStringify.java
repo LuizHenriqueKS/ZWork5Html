@@ -8,6 +8,7 @@ import br.zul.zwork5.html.node.ZHtmlElement;
 import br.zul.zwork5.html.node.ZHtmlNodeRoot;
 import br.zul.zwork5.html.node.ZHtmlText;
 import br.zul.zwork5.html.node.ZHtmlUnknown;
+import java.util.Map.Entry;
 
 /**
  *
@@ -54,19 +55,27 @@ public class ZHtmlNodeDefaultStringify implements ZHtmlNodeStringify{
 
     private String stringifyElement(ZHtmlElement element) throws ZHtmlNodeStringifyException {
         StringBuilder builder = new StringBuilder();
-        if (element.getTagName().equalsIgnoreCase("br")){
+        if ("br".equalsIgnoreCase(element.getTagName())){
             builder.append("<br/>");
         } else {
             builder.append("<");
             builder.append(element.getTagName());
+            builder.append(getAttributes(element));
             builder.append(">");
             
+            StringBuilder childBuilder = new StringBuilder();
             if (element.hasChildren()){
-                builder.append("\r\n");
+                childBuilder.append("\r\n");
                 for (ZHtmlNode node:element.listChildren()){
-                    builder.append(stringifyNode(node));
-                    builder.append("\r\n");
+                    childBuilder.append("\t");
+                    childBuilder.append(stringifyNode(node).replace("\r\n", "\r\n\t"));
+                    childBuilder.append("\r\n");
                 }
+            }
+            if (childBuilder.toString().trim().contains("\n")){
+                builder.append(childBuilder.toString());
+            } else {
+                builder.append(childBuilder.toString().trim());
             }
             
             builder.append("</");
@@ -99,6 +108,23 @@ public class ZHtmlNodeDefaultStringify implements ZHtmlNodeStringify{
         builder.append(comment.getContent());
         builder.append("-->");
         return builder.toString();
+    }
+
+    private String getAttributes(ZHtmlElement element) {
+        StringBuilder result = new StringBuilder();
+        for (Entry<String, String> e:element.rawAttributeMap().entrySet()){
+            result.append(" ");
+            if (e.getValue().isEmpty()) {
+                result.append(e.getKey());
+            } else {
+                result.append(e.getKey());
+                result.append("=");
+                result.append("\"");
+                result.append(e.getValue());
+                result.append("\"");
+            }
+        }
+        return result.toString();
     }
     
 }

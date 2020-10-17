@@ -2,10 +2,13 @@ package br.zul.zwork5.html.node;
 
 import br.zul.zwork5.html.filter.ZHtmlNode;
 import br.zul.zwork5.html.stringify.ZHtmlNodeDefaultStringify;
+import br.zul.zwork5.html.util.ZHtmlUtils;
 import br.zul.zwork5.util.ZList;
 import br.zul.zwork5.value.ZValue;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 
 /**
@@ -36,7 +39,7 @@ public class ZHtmlElement implements ZHtmlNode, ZHtmlNodeFather {
     //==========================================================================
     @Override
     public boolean hasChildren() {
-        return nodeList.isEmpty();
+        return !nodeList.isEmpty();
     }
 
     @Override
@@ -55,7 +58,7 @@ public class ZHtmlElement implements ZHtmlNode, ZHtmlNodeFather {
                 builder.append("\r\n");
                 break;
         }
-        for (ZHtmlNode node:query().nodes().all().stream().iterable()){
+        for (ZHtmlNode node:query().nodes().children().stream().iterable()){
             if (node instanceof ZHtmlElement){
                 builder.append(((ZHtmlElement) node).getText());
                 espace = false;
@@ -87,7 +90,7 @@ public class ZHtmlElement implements ZHtmlNode, ZHtmlNodeFather {
     //MÉTODOS PÚBLICOS
     //==========================================================================
     public String getAttribute(String name) {
-        return attributeMap.get(name);
+        return ZHtmlUtils.unescapeHtml(attributeMap.get(name));
     }
     
     public ZValue getAttrAsValue(String name){
@@ -98,7 +101,7 @@ public class ZHtmlElement implements ZHtmlNode, ZHtmlNodeFather {
         if (value==null) {
             removeAttribute(name);
         } else {
-            attributeMap.put(name, value);
+            attributeMap.put(name, ZHtmlUtils.escapeHtml(value));
         }
         return this;
     }
@@ -144,6 +147,19 @@ public class ZHtmlElement implements ZHtmlNode, ZHtmlNodeFather {
         String str = getAttrAsValue("class").asString().orElse("");
         String[] names = str.split(" ");
         return ZList.fromArray(names);
+    }
+
+    public Map<String, String> attributeMap() {
+        Map<String, String> result = new LinkedHashMap<>();
+        for (Entry<String, String> e:rawAttributeMap().entrySet()){
+            result.put(e.getKey(), ZHtmlUtils.unescapeHtml(e.getValue()));
+        }
+        return result;
+    }
+    
+
+    public Map<String, String> rawAttributeMap() {
+        return Collections.unmodifiableMap(attributeMap);
     }
 
     //==========================================================================

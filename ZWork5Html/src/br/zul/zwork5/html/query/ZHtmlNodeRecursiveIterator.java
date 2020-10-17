@@ -22,10 +22,10 @@ public class ZHtmlNodeRecursiveIterator<T extends ZHtmlNode> implements Iterator
     //==========================================================================
     //VARIÁVEIS
     //==========================================================================
-    private final Queue<Iterator<T>> iteratorQueue;
+    private final Queue<Iterator<? extends ZHtmlNode>> iteratorQueue;
     private final Class<T> cls;
     
-    private Iterator<T> currentIterator;
+    private Iterator<? extends ZHtmlNode> currentIterator;
     private T currentItem;
     
     //==========================================================================
@@ -59,7 +59,9 @@ public class ZHtmlNodeRecursiveIterator<T extends ZHtmlNode> implements Iterator
     private void nextItem(){
         try {
             currentItem = tryGetNextItem();
-            if (!isValidItem(currentItem)){
+            if (isValidItem(currentItem)){
+                iteratorQueue.add(currentItem.listChildren().iterator());
+            } else {
                 nextItem();
             }
         } catch (NoNextIteratorException ex){
@@ -69,14 +71,14 @@ public class ZHtmlNodeRecursiveIterator<T extends ZHtmlNode> implements Iterator
     
     private T tryGetNextItem() throws NoNextIteratorException {
         try {
-            return getIterator().next();
+            return (T)getIterator().next();
         } catch (NoSuchElementException ex){
             nextIterator();
             return null;
         }
     }
     
-    private Iterator<T> getIterator() throws NoNextIteratorException{
+    private Iterator<? extends ZHtmlNode> getIterator() throws NoNextIteratorException{
         if (currentIterator==null){
             nextIterator();
             return getIterator();

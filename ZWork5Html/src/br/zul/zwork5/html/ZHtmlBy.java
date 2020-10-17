@@ -11,7 +11,9 @@ import java.util.Objects;
 public class ZHtmlBy {
     
     public static ZHtmlElementFilter id(String id){
-        return (element)->Objects.equals(id, element.getId());
+        return (element)->{
+            return Objects.equals(id, element.getId());
+        };
     }
     
     public static ZHtmlElementFilter tagName(String tagName){

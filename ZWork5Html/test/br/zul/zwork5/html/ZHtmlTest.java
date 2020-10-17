@@ -33,13 +33,14 @@ public class ZHtmlTest {
                                                     .replaceRecursive("  ", " ")
                                                     .toString()
                                                     .trim();
-            assertEquals("1 + 1 = 2", expText);
+            assertEquals("[ 1 + 1 = 2 ]", expText);
         } catch (NoSuchElementException ex){
             System.out.println(instance.toString());
+            throw ex;
         }
     }
     
-    //@Test
+    @Test
     public void testWikiHtml() throws IOException, ZClosedException, ZHtmlParseException {
         System.out.println("testWikiHtml");
         String source = new ZTxtFileFastReader(new ZResource(getClass(), "/resource/wiki.html")).readAll();

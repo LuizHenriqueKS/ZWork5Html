@@ -1,5 +1,6 @@
 package br.zul.zwork5.html.parser;
 
+import br.zul.zwork5.html.parser.instruction.ZHtmlNodeParserInstructionTextBuilder;
 import br.zul.zwork5.str.ZStr;
 import br.zul.zwork5.str.search.ZStrSearchResult;
 
@@ -30,6 +31,28 @@ public class ZHtmlNodeParserSourceReader {
                      .map(r->searchResultToInstructionData(builder, r))
                      .findFirst()
                      .orElse(null);
+    }
+
+    public ZHtmlNodeParserInstructionData findDataDiff(ZHtmlNodeParserInstructionTextBuilder builder, String... patterns) {
+        for (int i=0;i<source.length();i++){
+            boolean find = false;
+            String ch = source.toString().substring(i, i+1);
+            for (String pattern:patterns){
+                if (ch.equals(pattern)){
+                   find = true;
+                   break;
+                }
+            }
+           if (!find){
+                return new ZHtmlNodeParserInstructionDataBuilder()
+                                        .setStart(i)
+                                        .setEnd(i+1)
+                                        .setInstructionBuilder(builder)
+                                        .setPattern(ch)
+                                        .build();
+           }
+        }
+        return null;
     }
 
     public ZStr read(ZHtmlNodeParserInstructionData data, String... patterns) {

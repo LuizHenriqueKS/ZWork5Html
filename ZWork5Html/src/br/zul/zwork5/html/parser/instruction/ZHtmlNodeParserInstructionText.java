@@ -1,32 +1,33 @@
 package br.zul.zwork5.html.parser.instruction;
 
+import br.zul.zwork5.html.node.ZHtmlText;
 import br.zul.zwork5.html.parser.ZHtmlNodeParserInstruction;
 import br.zul.zwork5.html.parser.ZHtmlNodeParserInstructionData;
 import br.zul.zwork5.html.parser.ZHtmlNodeParserInstructionRunner;
 import br.zul.zwork5.html.parser.ZHtmlNodeTreeBuilder;
 import br.zul.zwork5.str.ZStr;
-import java.util.NoSuchElementException;
 
 /**
  *
  * @author luiz.silva
  */
-class ZHtmlNodeParserInstructionCloseElement implements ZHtmlNodeParserInstruction {
+class ZHtmlNodeParserInstructionText implements ZHtmlNodeParserInstruction {
     
     //==========================================================================
     //VARIÁVEIS
     //==========================================================================
     private final ZStr source;
-    private final ZHtmlNodeParserInstructionData data;
-    
-    private String tagName;
     
     //==========================================================================
     //CONSTRUTORES
     //==========================================================================
-    public ZHtmlNodeParserInstructionCloseElement(ZStr source, ZHtmlNodeParserInstructionData data) {
-        this.data = data;
-        this.source = source.trim();
+    public ZHtmlNodeParserInstructionText(ZStr source, ZHtmlNodeParserInstructionData data) {
+        ZStr tmp = source.prepend(data.getPattern()).replace("\r\n", "\n");
+        StringBuilder result = new StringBuilder();
+        for (ZStr row:tmp.split("\n")){
+            result.append(row.trimStart());
+        }
+        this.source = new ZStr(result.toString());
     }
 
     //==========================================================================
@@ -34,25 +35,14 @@ class ZHtmlNodeParserInstructionCloseElement implements ZHtmlNodeParserInstructi
     //==========================================================================
     @Override
     public void preRun(ZHtmlNodeParserInstructionRunner runner) {
-        try {
-            ZHtmlNodeParserInstruction inst = runner.removeLastAlias("element:"+getTagName());
-            ((ZHtmlNodeParserInstructionOpenElement)inst).setHasChildren(true);
-        } catch (NullPointerException|NoSuchElementException ex){}
+        
     }
 
     @Override
     public void run(ZHtmlNodeTreeBuilder treeBuilder) {
-        treeBuilder.closeElement(getTagName());
-    }
-    
-    //==========================================================================
-    //MÉTODOS PRIVADOS
-    //==========================================================================
-    private String getTagName() {
-        if (tagName==null){
-            tagName = source.toString();
+        if (!source.toString().trim().isEmpty()){
+            treeBuilder.addNode(new ZHtmlText().setContent(source.toString()));
         }
-        return tagName;
     }
     
 }

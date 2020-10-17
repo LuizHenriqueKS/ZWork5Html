@@ -2,7 +2,9 @@ package br.zul.zwork5.html.parser;
 
 import br.zul.zwork5.html.exception.ZHtmlParseException;
 import br.zul.zwork5.html.parser.instruction.ZHtmlNodeParserInstructionCloseElementBuilder;
+import br.zul.zwork5.html.parser.instruction.ZHtmlNodeParserInstructionCommentBuilder;
 import br.zul.zwork5.html.parser.instruction.ZHtmlNodeParserInstructionOpenElementBuilder;
+import br.zul.zwork5.html.parser.instruction.ZHtmlNodeParserInstructionTextBuilder;
 import br.zul.zwork5.html.parser.instruction.ZHtmlNodeParserInstructionUnknownBuilder;
 import br.zul.zwork5.util.ZList;
 import java.util.ArrayList;
@@ -25,8 +27,10 @@ public class ZHtmlNodeParserInstructionFactory {
     public ZHtmlNodeParserInstructionFactory(){
         this.builderList = new ArrayList<>();
         this.builderList.add(new ZHtmlNodeParserInstructionOpenElementBuilder());
-        this.builderList.add(new ZHtmlNodeParserInstructionUnknownBuilder());
         this.builderList.add(new ZHtmlNodeParserInstructionCloseElementBuilder());
+        this.builderList.add(new ZHtmlNodeParserInstructionUnknownBuilder());
+        this.builderList.add(new ZHtmlNodeParserInstructionCommentBuilder());
+        this.builderList.add(new ZHtmlNodeParserInstructionTextBuilder());
     }
     
     //==========================================================================

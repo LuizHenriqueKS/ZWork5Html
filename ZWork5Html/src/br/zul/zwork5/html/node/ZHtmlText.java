@@ -69,15 +69,17 @@ public class ZHtmlText implements ZHtmlNode{
     public String getText(){
         return ZHtmlUtils.unescapeHtml(content);
     }
-    public void setText(String text){
+    public ZHtmlText setText(String text){
         this.content = ZHtmlUtils.escapeHtml(content);
+        return this;
     }
     
     public String getContent() {
         return content;
     }
-    public void setContent(String content) {
+    public ZHtmlText setContent(String content) {
         this.content = content;
+        return this;
     }
     
 }

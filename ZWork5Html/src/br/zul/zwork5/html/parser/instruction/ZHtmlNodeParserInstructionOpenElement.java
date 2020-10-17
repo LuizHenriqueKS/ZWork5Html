@@ -41,7 +41,6 @@ class ZHtmlNodeParserInstructionOpenElement implements ZHtmlNodeParserInstructio
     //CONSTRUTORES
     //==========================================================================
     public ZHtmlNodeParserInstructionOpenElement(ZStr source, ZHtmlNodeParserInstructionData data) {
-        this.data = data;
         source = source.trim();
         if (source.endsWith("/")){
             closed = true;
@@ -49,6 +48,7 @@ class ZHtmlNodeParserInstructionOpenElement implements ZHtmlNodeParserInstructio
         }  else {
             this.source = source;
         }
+        this.data = data;
     }
 
     //==========================================================================
@@ -64,9 +64,13 @@ class ZHtmlNodeParserInstructionOpenElement implements ZHtmlNodeParserInstructio
     @Override
     public void run(ZHtmlNodeTreeBuilder treeBuilder) {
         ZHtmlElement element = new ZHtmlElement();
-        element.setTagName(tagName);
+        element.setTagName(getTagName());
         getAttributeMap().forEach(element::putAttribute);
-        treeBuilder.addElementWithChildren(element);
+        if (hasChildren){
+            treeBuilder.addElementWithChildren(element);
+        } else {
+            treeBuilder.addElementWithoutChildren(element);
+        }
     }
     
     //==========================================================================
@@ -94,11 +98,11 @@ class ZHtmlNodeParserInstructionOpenElement implements ZHtmlNodeParserInstructio
         if (!str.isEmpty()){
             ZStrSearchResult equalsPosition = str.search("=").next();
             if (equalsPosition==null){
-                String key = str.toString();
+                String key = str.toString().trim();
                 String value = "";
                 attributeMap.put(key, value);
             } else {
-                String key = str.till(equalsPosition.getStartIndex()).toString();
+                String key = str.till(equalsPosition.getStartIndex()).toString().trim();
                 str = str.from(equalsPosition.getEndIndex()).trim();
                 if (hasQuote(str)){
                     ZPair<Integer, Integer> indices = indicesOfQuotes(str);
@@ -109,13 +113,16 @@ class ZHtmlNodeParserInstructionOpenElement implements ZHtmlNodeParserInstructio
                 } else {
                     ZStrSearchResult endResult = str.search(" ", "\t").next();
                     Integer end;
+                    Integer till;
                     if (endResult==null){
                         end = str.length();
+                        till = str.length();
                     } else {
                         end = endResult.getStartIndex();
+                        till = end;
                     }
-                    String value = str.till(end).toString();
-                    str = str.from(end+1);
+                    String value = str.till(till).toString();
+                    str = str.from(end);
                     attributeMap.put(key, value);
                 }
                 fillAttributeRecursive(attributeMap, str);
