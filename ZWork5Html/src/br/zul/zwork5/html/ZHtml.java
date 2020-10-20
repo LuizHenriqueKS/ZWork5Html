@@ -52,4 +52,8 @@ public class ZHtml {
         return new ZHtmlQuery(root);
     }
     
+    public ZHtmlNodeRoot getRoot(){
+        return root;
+    }
+    
 }
