@@ -4,6 +4,7 @@ import br.zul.zwork5.html.filter.ZHtmlNode;
 import br.zul.zwork5.html.stringify.ZHtmlNodeDefaultStringify;
 import br.zul.zwork5.html.util.ZHtmlUtils;
 import br.zul.zwork5.util.ZList;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -64,6 +65,11 @@ public class ZHtmlComment implements ZHtmlNode {
     @Override
     public ZList<ZHtmlNode> listChildren() {
         return new ZList<>();
+    }
+
+    @Override
+    public ZHtmlNode getChild(int index) throws NoSuchElementException {
+        throw new NoSuchElementException();
     }
 
     @Override

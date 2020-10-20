@@ -3,6 +3,7 @@ package br.zul.zwork5.html.node;
 import br.zul.zwork5.html.filter.ZHtmlNode;
 import br.zul.zwork5.html.util.ZHtmlUtils;
 import br.zul.zwork5.util.ZList;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -62,6 +63,11 @@ public class ZHtmlText implements ZHtmlNode{
     @Override
     public ZList<ZHtmlNode> listChildren() {
         return new ZList<>();
+    }
+
+    @Override
+    public ZHtmlNode getChild(int index) {
+        throw new NoSuchElementException();
     }
 
     @Override

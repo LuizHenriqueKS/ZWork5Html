@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -97,6 +98,25 @@ public class ZHtmlElement implements ZHtmlNode, ZHtmlNodeParent {
     @Override
     public boolean hasChild(ZHtmlNode node) {
         return nodeList.contains(node);
+    }
+
+    @Override
+    public ZHtmlNode getChild(int index) throws NoSuchElementException {
+        return nodeList.get(index);
+    }
+
+    @Override
+    public void addChild(int index, ZHtmlNode node) {
+        nodeList.add(index, node);
+        node.setParent(this);
+    }
+
+    @Override
+    public ZHtmlNode removeChild(int index) {
+        ZHtmlNode node = getChild(index);
+        nodeList.remove(index);
+        node.setParent(null);
+        return node;
     }
     
     //==========================================================================

@@ -3,6 +3,7 @@ package br.zul.zwork5.html.filter;
 import br.zul.zwork5.html.node.ZHtmlNodeParent;
 import br.zul.zwork5.html.query.ZHtmlQuery;
 import br.zul.zwork5.util.ZList;
+import java.util.NoSuchElementException;
 
 /**
  *
@@ -12,6 +13,7 @@ public interface ZHtmlNode {
     
     boolean hasChildren();
     boolean remove();
+    ZHtmlNode getChild(int index) throws NoSuchElementException;
     ZList<ZHtmlNode> listChildren();
     
     public ZHtmlNodeParent getParent();

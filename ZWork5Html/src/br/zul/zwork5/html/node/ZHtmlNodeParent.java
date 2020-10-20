@@ -9,7 +9,9 @@ import br.zul.zwork5.html.filter.ZHtmlNode;
 public interface ZHtmlNodeParent {
     
     void addChild(ZHtmlNode node);
+    void addChild(int index, ZHtmlNode node);
     void removeChild(ZHtmlNode node);
+    ZHtmlNode removeChild(int index);
     boolean hasChild(ZHtmlNode node);
     
 }

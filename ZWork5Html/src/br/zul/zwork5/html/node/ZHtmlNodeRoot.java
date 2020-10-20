@@ -46,6 +46,25 @@ public class ZHtmlNodeRoot implements ZHtmlNode, ZHtmlNodeParent {
         nodeList.add(node);
         node.setParent(this);
     }
+    
+    @Override
+    public void addChild(int index, ZHtmlNode node) {
+        nodeList.add(index, node);
+        node.setParent(this);
+    }
+    
+    @Override
+    public ZHtmlNode getChild(int index) {
+        return this.nodeList.get(index);
+    }
+
+    @Override
+    public ZHtmlNode removeChild(int index) {
+        ZHtmlNode node = getChild(index);
+        nodeList.remove(index);
+        node.setParent(null);
+        return node;
+    }
 
     @Override
     public void removeChild(ZHtmlNode node) {
@@ -74,5 +93,6 @@ public class ZHtmlNodeRoot implements ZHtmlNode, ZHtmlNodeParent {
     }
     @Override
     public void setParent(ZHtmlNodeParent parent) {}
+
     
 }
