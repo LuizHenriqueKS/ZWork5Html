@@ -26,7 +26,7 @@ class ZHtmlNodeParserInstructionUnknown implements ZHtmlNodeParserInstruction {
     //==========================================================================
     public ZHtmlNodeParserInstructionUnknown(ZStr source, ZHtmlNodeParserInstructionData data) {
         this.data = data;
-        this.source = source;
+        this.source = source.prepend(data.getPattern().substring(1));
     }
 
     //==========================================================================

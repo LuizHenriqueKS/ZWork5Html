@@ -16,7 +16,7 @@ public class ZHtmlNodeParserInstructionUnknownBuilder implements ZHtmlNodeParser
 
     @Override
     public ZHtmlNodeParserInstructionData parseData(ZHtmlNodeParserSourceReader srcReader) throws ZHtmlNodeParserInstructionBuilderException {
-        return srcReader.findData(this, "<!");
+        return srcReader.findData(this, "<!", "<?");
     }
 
     @Override

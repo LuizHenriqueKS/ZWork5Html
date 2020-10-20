@@ -87,7 +87,7 @@ public class ZHtmlNodeDefaultStringify implements ZHtmlNodeStringify{
 
     private String stringifyUnknown(ZHtmlUnknown unknown) {
         StringBuilder builder = new StringBuilder();
-        builder.append("<!");
+        builder.append("<");
         builder.append(unknown.getContent());
         builder.append(">");
         return builder.toString();

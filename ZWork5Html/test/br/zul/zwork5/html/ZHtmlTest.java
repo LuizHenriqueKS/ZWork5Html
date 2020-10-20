@@ -41,6 +41,15 @@ public class ZHtmlTest {
     }
     
     @Test
+    public void testHome3xhtml() throws IOException, ZClosedException, ZHtmlParseException {
+        System.out.println("testHome3xhtml");
+        String source = new ZTxtFileFastReader(new ZResource(getClass(), "/resource/home3.xhtml")).readAll();
+        ZHtml html = new ZHtml(source);
+        assertTrue(html.toString().startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+        assertFalse(html.toString().startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?></?xml>"));
+    }
+    
+    @Test
     public void testWikiHtml() throws IOException, ZClosedException, ZHtmlParseException {
         System.out.println("testWikiHtml");
         String source = new ZTxtFileFastReader(new ZResource(getClass(), "/resource/wiki.html")).readAll();
